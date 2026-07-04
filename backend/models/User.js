@@ -26,6 +26,37 @@ const userSchema = new mongoose.Schema(
       enum: ["student", "recruiter", "admin"],
       default: "student",
     },
+
+    phoneNumber: {
+      type: String,
+      default: "",
+    },
+
+    college: {
+      type: String,
+      default: "",
+    },
+
+    branch: {
+      type: String,
+      default: "",
+    },
+
+    bio: {
+      type: String,
+      default: "",
+    },
+
+    skills: [
+      {
+        type: String,
+      },
+    ],
+
+    profilePicture: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
