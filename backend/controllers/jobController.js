@@ -83,7 +83,11 @@ const updateJob = async (req, res) => {
         } = req.body;
 
         const job = await Job.findById(req.params.id);
-
+        if (job.createdBy.toString() !== req.user.userId) {
+    return res.status(403).json({
+        message: "You are not authorized to update this job",
+    });
+}
         if (!job) {
             return res.status(404).json({
                 message: "Job not found",

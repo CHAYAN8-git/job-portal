@@ -72,6 +72,11 @@ const updateCompany = async (req, res) => {
             return res.status(404).json({
                 message: "Company not found",
             });
+            if (company.createdBy.toString() !== req.user.userId) {
+    return res.status(403).json({
+        message: "You are not authorized to update this company",
+    });
+}
         }
 
         company.companyName = companyName || company.companyName;
