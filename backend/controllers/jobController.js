@@ -37,9 +37,22 @@ const createJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
     try {
-        const jobs = await Job.find()
-            .populate("company")
-            .populate("createdBy", "fullName email");
+
+        const keyword = req.query.keyword || "";
+        const location = req.query.location || "";
+       const jobs = await Job.find({
+    title: {
+        $regex: keyword,
+        $options: "i",
+    },
+
+    location: {
+        $regex: location,
+        $options: "i",
+    },
+})
+        .populate("company")
+        .populate("createdBy", "fullName email");
 
         res.status(200).json(jobs);
 
@@ -56,11 +69,7 @@ const getJobById = async (req, res) => {
             .populate("company")
             .populate("createdBy", "fullName email");
 
-        if (!job) {
-            return res.status(404).json({
-                message: "Job not found",
-            });
-        }
+       
 
         res.status(200).json(job);
 
@@ -83,16 +92,17 @@ const updateJob = async (req, res) => {
         } = req.body;
 
         const job = await Job.findById(req.params.id);
+           if (!job) {
+            return res.status(404).json({
+                message: "Job not found",
+            });
+        }
         if (job.createdBy.toString() !== req.user.userId) {
     return res.status(403).json({
         message: "You are not authorized to update this job",
     });
 }
-        if (!job) {
-            return res.status(404).json({
-                message: "Job not found",
-            });
-        }
+     
 
         job.title = title || job.title;
         job.description = description || job.description;
