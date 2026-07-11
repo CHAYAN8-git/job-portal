@@ -17,8 +17,7 @@ router.post(
     roleMiddleware("recruiter", "admin"),
     createJob
 );
-router.get("/", authMiddleware, getJobs);
-
+router.get("/", getJobs);
 router.get("/:id", authMiddleware, getJobById);
 
 router.put(

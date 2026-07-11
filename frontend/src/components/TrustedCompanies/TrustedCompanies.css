@@ -1,0 +1,48 @@
+
+.trusted{
+
+    padding:3rem 2rem;
+
+    text-align:center;
+
+}
+
+.trusted p{
+
+    color:var(--text-light);
+
+    margin-bottom:2rem;
+
+}
+
+.trusted-list{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:2rem;
+
+    flex-wrap:wrap;
+
+}
+
+.trusted-list span{
+
+    font-weight:700;
+
+    color:var(--secondary);
+
+    opacity:.75;
+
+    transition:var(--transition);
+
+}
+
+.trusted-list span:hover{
+
+    opacity:1;
+
+    color:var(--primary);
+
+}
