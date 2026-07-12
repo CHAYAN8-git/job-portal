@@ -17,9 +17,9 @@ function FeaturedJobs() {
         try {
 
             const { data } = await api.get("/jobs");
-
+            console.log(data);
             setJobs(data);
-
+            console.log("Jobs fetched:", data.length);
         }
 
         catch (error) {
@@ -58,8 +58,7 @@ function FeaturedJobs() {
 
                         location={job.location}
 
-                        salary={`₹${job.salary}`}
-
+salary={`₹${(job.salary / 100000).toFixed(0)} LPA`}     
                         type={job.experience}
 
                     />
