@@ -1,0 +1,62 @@
+.profile-page{
+
+    max-width:800px;
+
+    margin:3rem auto;
+
+    padding:2rem;
+
+}
+
+.profile-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:1rem;
+
+    background:white;
+
+    padding:2rem;
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.profile-form input,
+.profile-form textarea{
+
+    padding:1rem;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+}
+
+.profile-form textarea{
+
+    min-height:120px;
+
+    resize:vertical;
+
+}
+
+.profile-form button{
+
+    padding:1rem;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}

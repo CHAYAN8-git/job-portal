@@ -17,12 +17,10 @@ function FeaturedJobs() {
         try {
 
             const { data } = await api.get("/jobs");
-            console.log(data);
-            setJobs(data);
-            console.log("Jobs fetched:", data.length);
-        }
 
-        catch (error) {
+            setJobs(data);
+
+        } catch (error) {
 
             console.error(error);
 
@@ -45,22 +43,13 @@ function FeaturedJobs() {
                 {jobs.map((job) => (
 
                     <JobCard
-
                         key={job._id}
-
+                        jobId={job._id}
                         title={job.title}
-
-                        company={
-                            job.company?.companyName ||
-                            job.company?.name ||
-                            "Company"
-                        }
-
+                        company={job.company.companyName}
                         location={job.location}
-
-salary={`₹${(job.salary / 100000).toFixed(0)} LPA`}     
+                        salary={`₹${(job.salary / 100000).toFixed(1)} LPA`}
                         type={job.experience}
-
                     />
 
                 ))}
