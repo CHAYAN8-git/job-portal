@@ -7,10 +7,10 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 const {
     createJob,
     getJobs,
+    getMyJobs,
     getJobById,
     updateJob,
 } = require("../controllers/jobController");
-
 router.post(
     "/",
     authMiddleware,
@@ -18,6 +18,12 @@ router.post(
     createJob
 );
 router.get("/", getJobs);
+router.get(
+    "/my-jobs",
+    authMiddleware,
+    roleMiddleware("recruiter", "admin"),
+    getMyJobs
+);
 router.get("/:id", authMiddleware, getJobById);
 
 router.put(

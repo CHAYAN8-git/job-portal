@@ -3,12 +3,18 @@ import { toast } from "react-toastify";
 
 import api from "../services/api";
 
-function Jobs() {
+import "../styles/profile.css";
+
+function MyApplications() {
 
     const [applications, setApplications] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
+
         fetchApplications();
+
     }, []);
 
     async function fetchApplications() {
@@ -28,7 +34,17 @@ function Jobs() {
                 "Unable to fetch applications"
             );
 
+        } finally {
+
+            setLoading(false);
+
         }
+
+    }
+
+    if (loading) {
+
+        return <h2 style={{ textAlign: "center", marginTop: "3rem" }}>Loading...</h2>;
 
     }
 
@@ -40,15 +56,19 @@ function Jobs() {
 
             {applications.length === 0 ? (
 
-                <p>No applications found.</p>
+                <div className="profile-form">
+
+                    <h3>You haven't applied anywhere yet.</h3>
+
+                </div>
 
             ) : (
 
                 applications.map((application) => (
 
                     <div
-                        key={application._id}
                         className="profile-form"
+                        key={application._id}
                     >
 
                         <h3>
@@ -56,23 +76,27 @@ function Jobs() {
                         </h3>
 
                         <p>
-                            Company :
-                            {" "}
+
+                            <strong>Company : </strong>
+
                             {application.job.company.companyName}
+
                         </p>
 
                         <p>
-                            Location :
-                            {" "}
+
+                            <strong>Location : </strong>
+
                             {application.job.location}
+
                         </p>
 
                         <p>
-                            Status :
-                            {" "}
-                            <strong>
-                                {application.status}
-                            </strong>
+
+                            <strong>Status : </strong>
+
+                            {application.status}
+
                         </p>
 
                     </div>
@@ -87,4 +111,4 @@ function Jobs() {
 
 }
 
-export default Jobs;
+export default MyApplications;

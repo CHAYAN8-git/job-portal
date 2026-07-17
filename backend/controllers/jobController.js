@@ -62,7 +62,25 @@ const getJobs = async (req, res) => {
         });
     }
 };
+const getMyJobs = async (req, res) => {
+    try {
 
+        const jobs = await Job.find({
+            createdBy: req.user.userId,
+        })
+            .populate("company")
+            .populate("createdBy", "fullName email");
+
+        res.status(200).json(jobs);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+};
 const getJobById = async (req, res) => {
     try {
         const job = await Job.findById(req.params.id)
@@ -128,6 +146,7 @@ const updateJob = async (req, res) => {
 module.exports = {
     createJob,
     getJobs,
+    getMyJobs,
     getJobById,
     updateJob,
 };

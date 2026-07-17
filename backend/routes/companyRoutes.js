@@ -7,10 +7,10 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 const {
     createCompany,
     getCompanies,
+    getMyCompanies,
     getCompanyById,
     updateCompany,
 } = require("../controllers/companyController");
-
 router.post(
     "/",
     authMiddleware,
@@ -18,6 +18,12 @@ router.post(
     createCompany
 );
 router.get("/", authMiddleware, getCompanies);
+router.get(
+    "/my-companies",
+    authMiddleware,
+    roleMiddleware("recruiter", "admin"),
+    getMyCompanies
+);
 
 router.get("/:id", authMiddleware, getCompanyById);
 

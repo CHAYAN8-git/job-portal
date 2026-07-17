@@ -19,8 +19,11 @@ function JobCard({
 }) {
 
     const [loading, setLoading] = useState(false);
+    const [applied, setApplied] = useState(false);
 
     async function handleApply() {
+
+        if (applied) return;
 
         try {
 
@@ -35,7 +38,18 @@ function JobCard({
 
             toast.success(data.message);
 
+            setApplied(true);
+
         } catch (error) {
+
+            if (
+                error.response?.data?.message ===
+                "Already Applied"
+            ) {
+
+                setApplied(true);
+
+            }
 
             toast.error(
                 error.response?.data?.message ||
@@ -72,9 +86,15 @@ function JobCard({
 
                     <Button
                         onClick={handleApply}
-                        disabled={loading}
+                        disabled={loading || applied}
                     >
-                        {loading ? "Applying..." : "Apply"}
+                        {
+                            loading
+                                ? "Applying..."
+                                : applied
+                                ? "Applied ✓"
+                                : "Apply"
+                        }
                     </Button>
 
                 </div>

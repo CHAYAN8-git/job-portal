@@ -39,7 +39,26 @@ const getCompanies = async (req, res) => {
         });
     }
 };
+const getMyCompanies = async (req, res) => {
+    try {
 
+        const companies = await Company.find({
+            createdBy: req.user.userId,
+        }).populate(
+            "createdBy",
+            "fullName email"
+        );
+
+        res.status(200).json(companies);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+};
 const getCompanyById = async (req, res) => {
     try {
         const company = await Company.findById(req.params.id).populate(
@@ -69,15 +88,16 @@ const updateCompany = async (req, res) => {
         const company = await Company.findById(req.params.id);
 
         if (!company) {
-            return res.status(404).json({
-                message: "Company not found",
-            });
-            if (company.createdBy.toString() !== req.user.userId) {
+    return res.status(404).json({
+        message: "Company not found",
+    });
+}
+
+if (company.createdBy.toString() !== req.user.userId) {
     return res.status(403).json({
         message: "You are not authorized to update this company",
     });
 }
-        }
 
         company.companyName = companyName || company.companyName;
         company.description = description || company.description;
@@ -101,6 +121,7 @@ const updateCompany = async (req, res) => {
 module.exports = {
     createCompany,
     getCompanies,
+    getMyCompanies,
     getCompanyById,
     updateCompany,
 };

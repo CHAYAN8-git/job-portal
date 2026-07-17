@@ -8,6 +8,10 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import MyApplications from "./pages/MyApplications";
+import CreateCompany from "./pages/CreateCompany";
+import RecruiterDashboard from "./pages/RecruiterDashboard";
+import CreateJob from "./pages/CreateJob";
 function App() {
     return (
         <>
@@ -18,14 +22,55 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/jobs" element={<Jobs />} />
-<Route
-    path="/profile"
+                <Route
+                    path="/my-applications"
+                    element={
+                        <ProtectedRoute>
+                            <MyApplications />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute>
+                            <Profile />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+    path="/my-applications"
     element={
         <ProtectedRoute>
-            <Profile />
+            <MyApplications />
         </ProtectedRoute>
     }
-/>                <Route path="*" element={<NotFound />} />
+/>
+<Route
+    path="/company/create"
+    element={
+        <ProtectedRoute>
+            <CreateCompany />
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/recruiter"
+    element={
+        <ProtectedRoute>
+            <RecruiterDashboard />
+        </ProtectedRoute>
+    }
+/>
+<Route
+    path="/job/create"
+    element={
+        <ProtectedRoute>
+            <CreateJob />
+        </ProtectedRoute>
+    }
+/>
             </Routes>
         </>
     );
