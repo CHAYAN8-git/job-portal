@@ -78,7 +78,14 @@ const getApplicants = async (req, res) => {
 
 const updateApplicationStatus = async (req, res) => {
     try {
+
         const { status } = req.body;
+
+        if (!["Applied", "Accepted", "Rejected"].includes(status)) {
+            return res.status(400).json({
+                message: "Invalid status",
+            });
+        }
 
         const application = await Application.findById(req.params.id);
 
@@ -97,13 +104,16 @@ const updateApplicationStatus = async (req, res) => {
             application,
         });
 
-    } catch (error) {
-        res.status(500).json({
-            message: error.message,
-        });
-    }
-};
+    }catch (error) {
 
+    console.error(error);
+
+    res.status(500).json({
+        message: error.message,
+    });
+
+}
+};
 module.exports = {
     applyJob,
     getMyApplications,

@@ -22,6 +22,7 @@ const applicationSchema = new mongoose.Schema(
                 "Interview",
                 "Selected",
                 "Rejected",
+                "Accepted",
             ],
             default: "Applied",
         },
