@@ -1,91 +1,88 @@
 .search-box{
-
-    width:100%;
-
-    max-width:48rem;
-
     display:flex;
-
+    justify-content:center;
     align-items:center;
-
-    justify-content:space-between;
-
-    background:var(--surface);
-
-    border:1px solid var(--border);
-
-    border-radius:999rem;
-
-    box-shadow:var(--shadow-md);
-
-    overflow:hidden;
-
-    transition:var(--transition);
-
-}
-
-.search-box:hover{
-
-    box-shadow:var(--shadow-lg);
-
+    margin-top:40px;
 }
 
 .search-input{
-
+    width:700px;
+    height:60px;
+    background:#fff;
+    border-radius:16px;
     display:flex;
-
     align-items:center;
-
-    flex:1;
-
-    padding-inline:var(--space-5);
-
+    padding:0 20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
 .search-icon{
-
-    color:var(--text-light);
-
-    flex-shrink:0;
-
+    color:#666;
+    margin-right:12px;
 }
 
-.search-input .input{
-
-    padding:1.1rem;
-
+.search-input input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:17px;
 }
 
-.search-box .btn{
-
-    border-radius:999rem;
-
-    margin:.4rem;
-
+.filter-bar{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
 }
 
-@media(max-width:48rem){
-
-.search-box{
-
-    flex-direction:column;
-
-    border-radius:var(--radius-lg);
-
+.filter-bar input,
+.filter-bar select{
+    width:250px;
+    height:50px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:0 15px;
+    font-size:15px;
+    outline:none;
 }
 
-.search-input{
-
-    width:100%;
-
+.filter-bar input:focus,
+.filter-bar select:focus{
+    border-color:#2563eb;
 }
 
-.search-box .btn{
+@media(max-width:768px){
 
-    width:calc(100% - .8rem);
+    .search-input{
+        width:95%;
+    }
 
-    margin:.4rem;
+    .filter-bar{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .filter-bar input,
+    .filter-bar select{
+        width:95%;
+    }
 
 }
+.clear-btn{
+    height:50px;
+    padding:0 22px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.25s;
+}
 
+.clear-btn:hover{
+    background:#1d4ed8;
 }

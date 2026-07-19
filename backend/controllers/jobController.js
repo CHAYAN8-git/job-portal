@@ -37,10 +37,11 @@ const createJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
     try {
+const keyword = req.query.keyword || "";
+const location = req.query.location || "";
+const company = req.query.company || "";
+       const filter = {
 
-        const keyword = req.query.keyword || "";
-        const location = req.query.location || "";
-       const jobs = await Job.find({
     title: {
         $regex: keyword,
         $options: "i",
@@ -49,11 +50,44 @@ const getJobs = async (req, res) => {
     location: {
         $regex: location,
         $options: "i",
-    },
-})
-        .populate("company")
-        .populate("createdBy", "fullName email");
+    }
 
+};
+
+if (company) {
+
+    filter.company = company;
+
+}
+
+const sort = req.query.sort || "newest";
+
+let sortOption = {};
+
+switch (sort) {
+
+    case "salary":
+        sortOption = { salary: -1 };
+        break;
+
+    case "az":
+        sortOption = { title: 1 };
+        break;
+
+    default:
+        sortOption = { createdAt: -1 };
+}
+console.log(req.query);
+const jobs = await Job.find(filter)
+    .populate("company")
+    .sort(sortOption);
+    console.log(
+    jobs.map(job => ({
+        title: job.title,
+        salary: job.salary,
+        createdAt: job.createdAt
+    }))
+);
         res.status(200).json(jobs);
 
     } catch (error) {
