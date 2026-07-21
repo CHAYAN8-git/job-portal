@@ -37,58 +37,59 @@ const createJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
     try {
-const keyword = req.query.keyword || "";
-const location = req.query.location || "";
-const company = req.query.company || "";
-       const filter = {
 
-    title: {
-        $regex: keyword,
-        $options: "i",
-    },
+        const keyword = req.query.keyword || "";
+        const location = req.query.location || "";
+        const company = req.query.company || "";
 
-    location: {
-        $regex: location,
-        $options: "i",
-    }
+        const page = Number(req.query.page) || 1;
+        const limit = 6;
+        const skip = (page - 1) * limit;
 
-};
+        const filter = {
+            title: {
+                $regex: keyword,
+                $options: "i",
+            },
+            location: {
+                $regex: location,
+                $options: "i",
+            },
+        };
 
-if (company) {
+        if (company) {
+            filter.company = company;
+        }
 
-    filter.company = company;
+        const sort = req.query.sort || "newest";
 
-}
+        let sortOption = {};
 
-const sort = req.query.sort || "newest";
+        switch (sort) {
+            case "salary":
+                sortOption = { salary: -1 };
+                break;
 
-let sortOption = {};
+            case "az":
+                sortOption = { title: 1 };
+                break;
 
-switch (sort) {
+            default:
+                sortOption = { createdAt: -1 };
+        }
 
-    case "salary":
-        sortOption = { salary: -1 };
-        break;
+        const totalJobs = await Job.countDocuments(filter);
 
-    case "az":
-        sortOption = { title: 1 };
-        break;
+        const jobs = await Job.find(filter)
+            .populate("company")
+            .sort(sortOption)
+            .skip(skip)
+            .limit(limit);
 
-    default:
-        sortOption = { createdAt: -1 };
-}
-console.log(req.query);
-const jobs = await Job.find(filter)
-    .populate("company")
-    .sort(sortOption);
-    console.log(
-    jobs.map(job => ({
-        title: job.title,
-        salary: job.salary,
-        createdAt: job.createdAt
-    }))
-);
-        res.status(200).json(jobs);
+        res.status(200).json({
+            jobs,
+            totalJobs,
+        });
 
     } catch (error) {
         res.status(500).json({

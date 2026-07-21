@@ -9,24 +9,23 @@ import api from "../services/api";
 
 function Home() {
   const [jobs, setJobs] = useState([]);
-  const [sort, setSort] = useState("newest");
-  const [keyword, setKeyword] = useState("");
-
-  const [location, setLocation] = useState("");
-
-  const [company, setCompany] = useState("");
-
   const [companies, setCompanies] = useState([]);
+
+  const [keyword, setKeyword] = useState("");
+  const [location, setLocation] = useState("");
+  const [company, setCompany] = useState("");
+  const [sort, setSort] = useState("newest");
+
+  const [page, setPage] = useState(1);
+  const [totalJobs, setTotalJobs] = useState(0);
+
   const [stats, setStats] = useState({
     jobs: 0,
     companies: 0,
   });
-  useEffect(() => {
-    fetchCompanies();
-  }, []);
 
   useEffect(() => {
-    fetchJobs();
+    fetchCompanies();
   }, []);
 
   useEffect(() => {
@@ -35,7 +34,11 @@ function Home() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [keyword, location, company ,sort]);
+  }, [keyword, location, company, sort, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [keyword, location, company, sort]);
 
   async function fetchJobs() {
     try {
@@ -45,14 +48,21 @@ function Home() {
           location,
           company,
           sort,
+          page,
         },
       });
 
-      setJobs(data);
-      
+      if (page === 1) {
+        setJobs(data.jobs);
+      } else {
+        setJobs((prev) => [...prev, ...data.jobs]);
+      }
+
+      setTotalJobs(data.totalJobs);
+
       setStats((prev) => ({
         ...prev,
-        jobs: data.length,
+        jobs: data.totalJobs,
       }));
     } catch (error) {
       console.error(error);
@@ -62,6 +72,7 @@ function Home() {
   async function fetchCompanies() {
     try {
       const { data } = await api.get("/companies");
+
       setCompanies(data);
 
       setStats((prev) => ({
@@ -72,17 +83,22 @@ function Home() {
       console.error(error);
     }
   }
+
   function clearFilters() {
     setKeyword("");
     setLocation("");
     setCompany("");
+    setSort("newest");
+    setPage(1);
   }
+
+  function loadMore() {
+    setPage((prev) => prev + 1);
+  }
+
   return (
     <>
       <Hero
-       sort={sort}
-    setSort={setSort}
-        clearFilters={clearFilters}
         stats={stats}
         keyword={keyword}
         setKeyword={setKeyword}
@@ -91,11 +107,18 @@ function Home() {
         company={company}
         setCompany={setCompany}
         companies={companies}
+        sort={sort}
+        setSort={setSort}
+        clearFilters={clearFilters}
       />
 
       <TrustedCompanies />
 
-      <FeaturedJobs jobs={jobs} />
+      <FeaturedJobs
+        jobs={jobs}
+        totalJobs={totalJobs}
+        loadMore={loadMore}
+      />
 
       <Footer />
     </>

@@ -2,9 +2,10 @@ import "./FeaturedJobs.css";
 
 import JobCard from "../JobCard/JobCard";
 
-function FeaturedJobs({ jobs }) {
+function FeaturedJobs({ jobs, loadMore, totalJobs }) {
     return (
         <section className="featured-jobs">
+
             <h2>Featured Opportunities</h2>
 
             <p>
@@ -12,8 +13,11 @@ function FeaturedJobs({ jobs }) {
             </p>
 
             <div className="jobs-grid">
+
                 {jobs.length > 0 ? (
+
                     jobs.map((job) => (
+
                         <JobCard
                             key={job._id}
                             jobId={job._id}
@@ -23,11 +27,32 @@ function FeaturedJobs({ jobs }) {
                             salary={`₹${(job.salary / 100000).toFixed(1)} LPA`}
                             type={job.experience}
                         />
+
                     ))
+
                 ) : (
+
                     <h3>No Jobs Found</h3>
+
                 )}
+
             </div>
+
+            {jobs.length < totalJobs && (
+
+                <div className="load-more-container">
+
+                    <button
+                        className="load-more-btn"
+                        onClick={loadMore}
+                    >
+                        Load More
+                    </button>
+
+                </div>
+
+            )}
+
         </section>
     );
 }
