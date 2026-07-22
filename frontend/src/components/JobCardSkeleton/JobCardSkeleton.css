@@ -1,0 +1,53 @@
+.skeleton-card{
+    padding:20px;
+    border-radius:12px;
+    background:white;
+    border:1px solid #e5e7eb;
+}
+
+.skeleton{
+    background:#e5e7eb;
+    border-radius:6px;
+    animation:pulse 1.3s infinite;
+}
+
+.skeleton-title{
+    width:70%;
+    height:22px;
+    margin-bottom:18px;
+}
+
+.skeleton-company{
+    width:45%;
+    height:16px;
+    margin-bottom:14px;
+}
+
+.skeleton-location{
+    width:60%;
+    height:16px;
+    margin-bottom:14px;
+}
+
+.skeleton-salary{
+    width:40%;
+    height:16px;
+    margin-bottom:24px;
+}
+
+.skeleton-button{
+    width:120px;
+    height:38px;
+}
+
+@keyframes pulse{
+    0%{
+        opacity:.5;
+    }
+    50%{
+        opacity:1;
+    }
+    100%{
+        opacity:.5;
+    }
+}

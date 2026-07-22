@@ -1,8 +1,9 @@
 import "./FeaturedJobs.css";
 
 import JobCard from "../JobCard/JobCard";
+import JobCardSkeleton from "../JobCardSkeleton/JobCardSkeleton";
 
-function FeaturedJobs({ jobs, loadMore, totalJobs }) {
+function FeaturedJobs({ jobs, loadMore, totalJobs, loading }) {
     return (
         <section className="featured-jobs">
 
@@ -14,7 +15,13 @@ function FeaturedJobs({ jobs, loadMore, totalJobs }) {
 
             <div className="jobs-grid">
 
-                {jobs.length > 0 ? (
+                {loading ? (
+
+                    [...Array(6)].map((_, index) => (
+                        <JobCardSkeleton key={index} />
+                    ))
+
+                ) : jobs.length > 0 ? (
 
                     jobs.map((job) => (
 
@@ -38,7 +45,7 @@ function FeaturedJobs({ jobs, loadMore, totalJobs }) {
 
             </div>
 
-            {jobs.length < totalJobs && (
+            {!loading && jobs.length < totalJobs && (
 
                 <div className="load-more-container">
 

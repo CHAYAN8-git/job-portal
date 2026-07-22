@@ -23,7 +23,7 @@ function Home() {
     jobs: 0,
     companies: 0,
   });
-
+const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchCompanies();
   }, []);
@@ -41,34 +41,37 @@ function Home() {
   }, [keyword, location, company, sort]);
 
   async function fetchJobs() {
-    try {
-      const { data } = await api.get("/jobs", {
-        params: {
-          keyword,
-          location,
-          company,
-          sort,
-          page,
-        },
-      });
+  try {
+    setLoading(true);
 
-      if (page === 1) {
-        setJobs(data.jobs);
-      } else {
-        setJobs((prev) => [...prev, ...data.jobs]);
-      }
+    const { data } = await api.get("/jobs", {
+      params: {
+        keyword,
+        location,
+        company,
+        sort,
+        page,
+      },
+    });
 
-      setTotalJobs(data.totalJobs);
-
-      setStats((prev) => ({
-        ...prev,
-        jobs: data.totalJobs,
-      }));
-    } catch (error) {
-      console.error(error);
+    if (page === 1) {
+      setJobs(data.jobs);
+    } else {
+      setJobs((prev) => [...prev, ...data.jobs]);
     }
-  }
 
+    setTotalJobs(data.totalJobs);
+
+    setStats((prev) => ({
+      ...prev,
+      jobs: data.totalJobs,
+    }));
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+}
   async function fetchCompanies() {
     try {
       const { data } = await api.get("/companies");
@@ -118,6 +121,7 @@ function Home() {
         jobs={jobs}
         totalJobs={totalJobs}
         loadMore={loadMore}
+        loading={loading}
       />
 
       <Footer />
