@@ -1,21 +1,10 @@
 import "./Hero.css";
 
-import SearchBar from "../SearchBar/SearchBar";
 import StatCard from "../StatCard/StatCard";
 import Badge from "../Badge/Badge";
 import Card from "../Card/Card";
 
-function Hero({
-    clearFilters,  stats,  keyword,
-  setKeyword,
-  location,
-  setLocation,
-  company,
-  setCompany,
-  companies,
-  sort,
-setSort,
-}) {
+function Hero({ stats }) {
   return (
     <section className="hero">
       <Badge>🚀 India's Smart Placement Portal</Badge>
@@ -29,20 +18,7 @@ setSort,
         kickstart your career journey.
       </p>
 
-<SearchBar
-   sort={sort}
-    setSort={setSort}
-    clearFilters={clearFilters}        keyword={keyword}
-        setKeyword={setKeyword}
-        location={location}
-        setLocation={setLocation}
-        company={company}
-        setCompany={setCompany}
-        companies={companies}
-      />
-
       <div className="hero-stats">
-        
         <Card>
           <StatCard number={stats.jobs} label="Jobs" />
         </Card>

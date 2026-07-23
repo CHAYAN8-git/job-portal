@@ -38,14 +38,7 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-                <Route
-    path="/my-applications"
-    element={
-        <ProtectedRoute>
-            <MyApplications />
-        </ProtectedRoute>
-    }
-/>
+              
 <Route
     path="/company/create"
     element={
