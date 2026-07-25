@@ -67,6 +67,21 @@ async function updateStatus(applicationId, status) {
     }
 
 }
+async function deleteJob(jobId) {
+    try {
+
+        await api.delete(`/jobs/${jobId}`);
+
+        toast.success("Job deleted successfully");
+
+        fetchData();
+
+    } catch (error) {
+
+        toast.error("Unable to delete job");
+
+    }
+}
   return (
     <section className="recruiter-page">
       <h1>Recruiter Dashboard</h1>
@@ -122,13 +137,37 @@ async function updateStatus(applicationId, status) {
             {job.company?.companyName}
         </p>
 
-        <button
-            className="dashboard-btn"
-            onClick={() => fetchApplicants(job._id)}
-        >
-            View Applicants
-        </button>
+       <div
+    style={{
+        display: "flex",
+        gap: "10px",
+        marginTop: "12px",
+        flexWrap: "wrap",
+    }}
+>
 
+    <button
+        className="dashboard-btn"
+        onClick={() => fetchApplicants(job._id)}
+    >
+        View Applicants
+    </button>
+
+    <Link
+        className="dashboard-btn"
+        to={`/job/edit/${job._id}`}
+    >
+        Edit Job
+    </Link>
+
+    <button
+        className="dashboard-btn"
+        onClick={() => deleteJob(job._id)}
+    >
+        Delete Job
+    </button>
+
+</div>
     </div>
 
 ))}

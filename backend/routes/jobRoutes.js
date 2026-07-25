@@ -10,6 +10,7 @@ const {
     getMyJobs,
     getJobById,
     updateJob,
+    deleteJob,
 } = require("../controllers/jobController");
 router.post(
     "/",
@@ -31,5 +32,11 @@ router.put(
     authMiddleware,
     roleMiddleware("recruiter", "admin"),
     updateJob
+);
+router.delete(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("recruiter"),
+    deleteJob
 );
 module.exports = router;

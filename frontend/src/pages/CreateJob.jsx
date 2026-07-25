@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";import { toast } from "react-toastify";
 
 import api from "../services/api";
 import "../styles/recruiter.css";
@@ -8,7 +7,7 @@ import "../styles/recruiter.css";
 function CreateJob() {
 
     const navigate = useNavigate();
-
+    const { id } = useParams();
     const [companies, setCompanies] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -20,10 +19,14 @@ function CreateJob() {
         experience: "",
         skills: "",
     });
-
+const isEdit = Boolean(id);
     useEffect(() => {
-        fetchCompanies();
-    }, []);
+    fetchCompanies();
+
+    if (isEdit) {
+        fetchJob();
+    }
+}, []);
 
     async function fetchCompanies() {
 
@@ -49,41 +52,80 @@ function CreateJob() {
         });
 
     }
+async function fetchJob() {
 
+    try {
+
+        const { data } = await api.get(`/jobs/${id}`);
+
+        setFormData({
+            title: data.title,
+            description: data.description,
+            company: data.company._id,
+            location: data.location,
+            salary: data.salary,
+            experience: data.experience,
+            skills: data.skills.join(", "),
+        });
+
+    } catch (error) {
+
+        toast.error("Unable to load job");
+
+    }
+
+}
     async function handleSubmit(e) {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        try {
+    try {
 
-            const payload = {
-                ...formData,
-                skills: formData.skills
-                    .split(",")
-                    .map(skill => skill.trim()),
-            };
+        const payload = {
+            ...formData,
+            skills: formData.skills
+                .split(",")
+                .map(skill => skill.trim()),
+        };
 
-            const { data } = await api.post(
+        let data;
+
+        if (isEdit) {
+
+            const response = await api.put(
+                `/jobs/${id}`,
+                payload
+            );
+
+            data = response.data;
+
+        } else {
+
+            const response = await api.post(
                 "/jobs",
                 payload
             );
 
-            toast.success(data.message);
-
-            navigate("/recruiter");
+            data = response.data;
 
         }
 
-        catch (error) {
+        toast.success(data.message);
 
-            toast.error(
-                error.response?.data?.message ||
-                "Unable to create job"
-            );
+        navigate("/recruiter");
 
-        }
+    } catch (error) {
+
+        toast.error(
+            error.response?.data?.message ||
+            (isEdit
+                ? "Unable to update job"
+                : "Unable to create job")
+        );
 
     }
+
+}
 
     return (
 
@@ -94,8 +136,9 @@ function CreateJob() {
                 onSubmit={handleSubmit}
             >
 
-                <h2>Create Job</h2>
-
+<h2>
+    {isEdit ? "Edit Job" : "Create Job"}
+</h2>
                 <input
                     name="title"
                     placeholder="Job Title"
@@ -162,9 +205,9 @@ function CreateJob() {
                     onChange={handleChange}
                 />
 
-                <button type="submit">
-                    Create Job
-                </button>
+              <button type="submit">
+    {isEdit ? "Update Job" : "Create Job"}
+</button>
 
             </form>
 

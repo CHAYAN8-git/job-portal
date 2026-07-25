@@ -177,6 +177,37 @@ const updateJob = async (req, res) => {
         });
     }
 };
+const deleteJob = async (req, res) => {
+    try {
+
+        const job = await Job.findById(req.params.id);
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found",
+            });
+        }
+
+        if (job.createdBy.toString() !== req.user.userId) {
+            return res.status(403).json({
+                message: "You are not authorized to delete this job",
+            });
+        }
+
+        await Job.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            message: "Job deleted successfully",
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+};
 
 module.exports = {
     createJob,
@@ -184,4 +215,5 @@ module.exports = {
     getMyJobs,
     getJobById,
     updateJob,
+    deleteJob,
 };

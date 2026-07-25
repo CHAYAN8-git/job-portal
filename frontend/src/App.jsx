@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -64,7 +63,16 @@ function App() {
         </ProtectedRoute>
     }
 />
+  <Route
+    path="/job/edit/:id"
+    element={
+        <ProtectedRoute>
+            <CreateJob />
+        </ProtectedRoute>
+    }
+/>
             </Routes>
+          
         </>
     );
 }
