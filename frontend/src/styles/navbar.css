@@ -15,17 +15,15 @@
 
     padding:18px clamp(20px,6vw,90px);
 
-    background:rgba(255,255,255,.82);
-
+background:color-mix(in srgb, var(--surface) 85%, transparent);
     backdrop-filter:blur(14px);
 
-    border-bottom:1px solid rgba(0,0,0,.05);
-
+border-bottom:1px solid var(--border);
     box-shadow:var(--shadow-sm);
 }
 
 .logo{
-
+    transition:var(--transition);
     font-size:1.9rem;
 
     font-weight:700;
@@ -34,7 +32,11 @@
 
     cursor:pointer;
 }
+.logo:hover{
 
+    transform:scale(1.03);
+
+}
 .logo span{
 
     color:var(--primary);
@@ -168,5 +170,48 @@
 .logout-btn:hover{
 
     background:var(--primary-dark);
+
+}
+/* ===========================
+   THEME BUTTON
+=========================== */
+
+.theme-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:1px solid var(--border);
+
+    background:var(--surface);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:all .3s ease;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.theme-btn:hover{
+
+    transform:translateY(-2px) rotate(12deg);
+
+    background:var(--primary);
+
+    color:white;
+
+    box-shadow:var(--shadow-md);
 
 }

@@ -53,7 +53,29 @@
 /* ===========================
    RESET
 =========================== */
+[data-theme="dark"]{
 
+    --primary:#3b82f6;
+    --primary-dark:#2563eb;
+
+    --secondary:#f8fafc;
+
+    --background:#0f172a;
+
+    --surface:#1e293b;
+
+    --text:#f8fafc;
+
+    --text-light:#cbd5e1;
+
+    --border:#334155;
+
+    --shadow-sm:0 2px 10px rgba(0,0,0,.25);
+
+    --shadow-md:0 10px 30px rgba(0,0,0,.35);
+
+    --shadow-lg:0 20px 50px rgba(0,0,0,.45);
+}
 *{
     margin:0;
     padding:0;
@@ -71,8 +93,11 @@ body{
     background:var(--background);
 
     color:var(--text);
-}
 
+    transition:
+        background .3s ease,
+        color .3s ease;
+}
 a{
     text-decoration:none;
     color:inherit;

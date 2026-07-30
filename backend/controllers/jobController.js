@@ -1,4 +1,5 @@
 const Job = require("../models/Job");
+const Application = require("../models/Application");
 
 const createJob = async (req, res) => {
     try {
@@ -97,6 +98,7 @@ const getJobs = async (req, res) => {
         });
     }
 };
+
 const getMyJobs = async (req, res) => {
     try {
 
@@ -116,25 +118,34 @@ const getMyJobs = async (req, res) => {
 
     }
 };
+
 const getJobById = async (req, res) => {
     try {
+
         const job = await Job.findById(req.params.id)
             .populate("company")
             .populate("createdBy", "fullName email");
 
-       
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found",
+            });
+        }
 
         res.status(200).json(job);
 
     } catch (error) {
+
         res.status(500).json({
             message: error.message,
         });
+
     }
 };
 
 const updateJob = async (req, res) => {
     try {
+
         const {
             title,
             description,
@@ -145,17 +156,18 @@ const updateJob = async (req, res) => {
         } = req.body;
 
         const job = await Job.findById(req.params.id);
-           if (!job) {
+
+        if (!job) {
             return res.status(404).json({
                 message: "Job not found",
             });
         }
+
         if (job.createdBy.toString() !== req.user.userId) {
-    return res.status(403).json({
-        message: "You are not authorized to update this job",
-    });
-}
-     
+            return res.status(403).json({
+                message: "You are not authorized to update this job",
+            });
+        }
 
         job.title = title || job.title;
         job.description = description || job.description;
@@ -172,11 +184,14 @@ const updateJob = async (req, res) => {
         });
 
     } catch (error) {
+
         res.status(500).json({
             message: error.message,
         });
+
     }
 };
+
 const deleteJob = async (req, res) => {
     try {
 
@@ -194,6 +209,12 @@ const deleteJob = async (req, res) => {
             });
         }
 
+        // Delete all applications related to this job
+        await Application.deleteMany({
+            job: req.params.id,
+        });
+
+        // Delete the job
         await Job.findByIdAndDelete(req.params.id);
 
         res.status(200).json({

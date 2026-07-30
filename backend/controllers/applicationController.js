@@ -43,6 +43,7 @@ const applyJob = async (req, res) => {
 
 const getMyApplications = async (req, res) => {
     try {
+
         const applications = await Application.find({
             applicant: req.user.userId,
         }).populate({
@@ -52,15 +53,33 @@ const getMyApplications = async (req, res) => {
             },
         });
 
-        res.status(200).json(applications);
+        const validApplications = [];
+
+        for (const application of applications) {
+
+            if (application.job) {
+
+                validApplications.push(application);
+
+            } else {
+
+                // Remove orphan application permanently
+                await Application.findByIdAndDelete(application._id);
+
+            }
+
+        }
+
+        res.status(200).json(validApplications);
 
     } catch (error) {
+
         res.status(500).json({
             message: error.message,
         });
+
     }
 };
-
 const getApplicants = async (req, res) => {
     try {
         const applications = await Application.find({
