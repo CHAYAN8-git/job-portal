@@ -215,3 +215,32 @@ border-bottom:1px solid var(--border);
     box-shadow:var(--shadow-md);
 
 }
+.chat-btn{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    transition:.3s;
+
+}
+
+.chat-btn:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}

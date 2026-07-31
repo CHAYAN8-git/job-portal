@@ -3,6 +3,7 @@ import "../styles/navbar.css";
 import { useAuth } from "../context/AuthContext";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { MessageCircle } from "lucide-react";
 function Navbar() {
     const { user, logout } = useAuth();
 const { theme, toggleTheme } = useTheme();
@@ -92,7 +93,12 @@ const { theme, toggleTheme } = useTheme();
                         </Link>
                     </>
                 )}
-
+<Link
+    to="/chat"
+    className="chat-btn"
+>
+    <MessageCircle size={20} />
+</Link>
             </div>
 
         </nav>

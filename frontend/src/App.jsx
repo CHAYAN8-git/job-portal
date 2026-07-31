@@ -11,6 +11,7 @@ import MyApplications from "./pages/MyApplications";
 import CreateCompany from "./pages/CreateCompany";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import CreateJob from "./pages/CreateJob";
+import Chat from "./pages/Chat";
 function App() {
     return (
         <>
@@ -68,6 +69,14 @@ function App() {
     element={
         <ProtectedRoute>
             <CreateJob />
+        </ProtectedRoute>
+    }
+/>
+<Route
+    path="/chat"
+    element={
+        <ProtectedRoute>
+            <Chat />
         </ProtectedRoute>
     }
 />
