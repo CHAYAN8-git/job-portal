@@ -1,12 +1,30 @@
+/* ==========================================================
+   PROFILE PAGE
+========================================================== */
+
 .profile-page{
 
-    max-width:800px;
+    max-width:950px;
 
     margin:3rem auto;
 
     padding:2rem;
 
 }
+
+.profile-page h2{
+
+    font-size:2rem;
+
+    margin-bottom:2rem;
+
+    color:var(--text);
+
+}
+
+/* ==========================================================
+   PROFILE CARD
+========================================================== */
 
 .profile-form{
 
@@ -16,47 +34,180 @@
 
     gap:1rem;
 
-    background:white;
+    background:var(--surface);
+
+    color:var(--text);
 
     padding:2rem;
 
+    margin-bottom:1.5rem;
+
     border-radius:20px;
+
+    border:1px solid var(--border);
 
     box-shadow:var(--shadow-md);
 
+    transition:.3s ease;
+
 }
 
+.profile-form:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+/* ==========================================================
+   HEADINGS
+========================================================== */
+
+.profile-form h3{
+
+    font-size:1.4rem;
+
+    color:var(--text);
+
+    margin-bottom:.5rem;
+
+}
+
+.profile-form p{
+
+    font-size:1rem;
+
+    color:var(--text-light);
+
+    line-height:1.6;
+
+}
+
+.profile-form strong{
+
+    color:var(--text);
+
+}
+
+/* ==========================================================
+   INPUTS
+========================================================== */
+
 .profile-form input,
+
 .profile-form textarea{
+
+    width:100%;
 
     padding:1rem;
 
-    border:1px solid #ddd;
+    border:1px solid var(--border);
 
-    border-radius:10px;
+    border-radius:12px;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.profile-form input:focus,
+
+.profile-form textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
 
 }
 
 .profile-form textarea{
 
-    min-height:120px;
+    min-height:130px;
 
     resize:vertical;
 
 }
 
+/* ==========================================================
+   BUTTON
+========================================================== */
+
 .profile-form button{
+
+    margin-top:.5rem;
 
     padding:1rem;
 
     border:none;
 
-    background:var(--primary);
+    border-radius:12px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        #4f8cff
+    );
 
     color:white;
 
-    border-radius:12px;
+    font-size:15px;
+
+    font-weight:600;
 
     cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.25);
+
+}
+
+.profile-form button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.profile-form button:active{
+
+    transform:scale(.98);
+
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media(max-width:768px){
+
+.profile-page{
+
+    padding:1rem;
+
+}
+
+.profile-form{
+
+    padding:1.5rem;
+
+}
+
+.profile-page h2{
+
+    font-size:1.7rem;
+
+}
+
+.profile-form h3{
+
+    font-size:1.2rem;
+
+}
 
 }

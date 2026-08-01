@@ -25,15 +25,16 @@ function FeaturedJobs({ jobs, loadMore, totalJobs, loading }) {
 
                     jobs.map((job) => (
 
-                        <JobCard
-                            key={job._id}
-                            jobId={job._id}
-                            title={job.title}
-                            company={job.company.companyName}
-                            location={job.location}
-                            salary={`₹${(job.salary / 100000).toFixed(1)} LPA`}
-                            type={job.experience}
-                        />
+                       <JobCard
+    key={job._id}
+    jobId={job._id}
+    recruiterId={job.createdBy._id}
+    title={job.title}
+    company={job.company.companyName}
+    location={job.location}
+    salary={`₹${(job.salary / 100000).toFixed(1)} LPA`}
+    type={job.experience}
+/>
 
                     ))
 

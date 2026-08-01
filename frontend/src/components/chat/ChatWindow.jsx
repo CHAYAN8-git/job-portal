@@ -1,87 +1,108 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
+
 import MessageBubble from "./MessageBubble";
 import MessageInput from "./MessageInput";
 
-const messages = [
-    {
-        id: 1,
-        sender: "other",
-        text: "Hi 👋",
-        time: "10:00 AM",
-    },
-    {
-        id: 2,
-        sender: "me",
-        text: "Hey Rahul!",
-        time: "10:01 AM",
-    },
-    {
-        id: 3,
-        sender: "other",
-        text: "Thanks for accepting my application.",
-        time: "10:02 AM",
-    },
-    {
-        id: 4,
-        sender: "me",
-        text: "Sure! When are you available for an interview?",
-        time: "10:03 AM",
-    },
-    {
-        id: 5,
-        sender: "other",
-        text: "Tomorrow around 2 PM works for me.",
-        time: "10:05 AM",
-    },
-];
+function ChatWindow({ conversation }) {
 
-function ChatWindow() {
+    const { user } = useAuth();
+
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+
+        if (conversation) {
+            fetchMessages();
+        }
+
+    }, [conversation]);
+
+    async function fetchMessages() {
+
+        try {
+
+            const { data } = await api.get(
+                `/messages/${conversation._id}`
+            );
+
+            setMessages(data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    if (!conversation) {
+
+        return (
+            <div className="chat-window">
+
+                <div className="empty-chat">
+
+                    <h2>Select a Conversation</h2>
+
+                    <p>Choose a conversation to start chatting.</p>
+
+                </div>
+
+            </div>
+        );
+
+    }
+
+    const otherUser = conversation.participants.find(
+        participant => participant._id !== user._id
+    );
+
     return (
-        <div className="chat-window">
 
-            {/* Header */}
+        <div className="chat-window">
 
             <div className="chat-header">
 
                 <div className="chat-user">
 
                     <div className="chat-avatar">
-                        R
+
+                        {otherUser?.fullName?.charAt(0)}
+
                         <span className="online-dot"></span>
+
                     </div>
 
                     <div>
-                        <h3>Rahul Sharma</h3>
+
+                        <h3>{otherUser?.fullName}</h3>
+
                         <p>🟢 Active Now</p>
+
                     </div>
 
                 </div>
 
                 <div className="chat-actions">
 
-                    <div className="chat-action">
-                        📞
-                    </div>
+                    <div className="chat-action">📞</div>
 
-                    <div className="chat-action">
-                        📹
-                    </div>
+                    <div className="chat-action">📹</div>
 
-                    <div className="chat-action">
-                        ⋮
-                    </div>
+                    <div className="chat-action">⋮</div>
 
                 </div>
 
             </div>
-
-            {/* Messages */}
 
             <div className="chat-messages">
 
                 {messages.map((message) => (
 
                     <MessageBubble
-                        key={message.id}
+                        key={message._id}
                         message={message}
                     />
 
@@ -89,12 +110,16 @@ function ChatWindow() {
 
             </div>
 
-            {/* Input */}
-
-            <MessageInput />
+            <MessageInput
+                conversation={conversation}
+                messages={messages}
+                setMessages={setMessages}
+            />
 
         </div>
+
     );
+
 }
 
 export default ChatWindow;

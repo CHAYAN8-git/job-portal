@@ -1,10 +1,17 @@
+import { useAuth } from "../../context/AuthContext";
+
 function MessageBubble({ message }) {
+
+    const { user } = useAuth();
+
+    const isMe =
+        message.sender._id === user._id;
 
     return (
 
         <div
             className={
-                message.sender === "me"
+                isMe
                     ? "message me"
                     : "message other"
             }
@@ -12,7 +19,16 @@ function MessageBubble({ message }) {
 
             <p>{message.text}</p>
 
-            <span>{message.time}</span>
+            <span>
+
+                {new Date(
+                    message.createdAt
+                ).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })}
+
+            </span>
 
         </div>
 

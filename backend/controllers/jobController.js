@@ -81,11 +81,12 @@ const getJobs = async (req, res) => {
 
         const totalJobs = await Job.countDocuments(filter);
 
-        const jobs = await Job.find(filter)
-            .populate("company")
-            .sort(sortOption)
-            .skip(skip)
-            .limit(limit);
+       const jobs = await Job.find(filter)
+    .populate("company")
+    .populate("createdBy", "fullName email role")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limit);
 
         res.status(200).json({
             jobs,

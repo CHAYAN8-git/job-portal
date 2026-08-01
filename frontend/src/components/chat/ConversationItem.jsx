@@ -1,14 +1,33 @@
-function ConversationItem({ conversation }) {
+import { useAuth } from "../../context/AuthContext";
+
+function ConversationItem({
+
+    conversation,
+    active,
+    onClick,
+
+}) {
+
+    const { user } = useAuth();
+
+    const otherUser = conversation.participants.find(
+
+        participant => participant._id !== user._id
+
+    );
+
     return (
-        <div className="conversation-item">
+
+        <div
+            className={`conversation-item ${active ? "active" : ""}`}
+            onClick={onClick}
+        >
 
             <div className="avatar">
 
-                {conversation.name.charAt(0)}
+                {otherUser?.fullName?.charAt(0)}
 
-                {conversation.online && (
-                    <span className="online-dot"></span>
-                )}
+                <span className="online-dot"></span>
 
             </div>
 
@@ -16,34 +35,32 @@ function ConversationItem({ conversation }) {
 
                 <div className="conversation-top">
 
-                    <h4>{conversation.name}</h4>
-
-                    <span>{conversation.time}</span>
+                    <h4>{otherUser?.fullName}</h4>
 
                 </div>
 
                 <p className="role">
-                    {conversation.role}
+
+                    {otherUser?.role}
+
                 </p>
 
                 <div className="conversation-bottom">
 
                     <p className="last-message">
-                        {conversation.lastMessage}
-                    </p>
 
-                    {conversation.unread > 0 && (
-                        <div className="unread">
-                            {conversation.unread}
-                        </div>
-                    )}
+                        Start chatting...
+
+                    </p>
 
                 </div>
 
             </div>
 
         </div>
+
     );
+
 }
 
 export default ConversationItem;

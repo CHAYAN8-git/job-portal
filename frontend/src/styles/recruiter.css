@@ -1,12 +1,30 @@
+/* ==========================================================
+   RECRUITER PAGE
+========================================================== */
+
 .recruiter-page{
 
-    max-width:900px;
+    max-width:1000px;
 
     margin:3rem auto;
 
     padding:2rem;
 
 }
+
+.recruiter-page h2{
+
+    font-size:2rem;
+
+    color:var(--text);
+
+    margin-bottom:2rem;
+
+}
+
+/* ==========================================================
+   FORM
+========================================================== */
 
 .recruiter-form{
 
@@ -16,26 +34,57 @@
 
     gap:1rem;
 
-    background:white;
+    background:var(--surface);
+
+    color:var(--text);
 
     padding:2rem;
 
     border-radius:20px;
 
+    border:1px solid var(--border);
+
     box-shadow:var(--shadow-md);
+
+    transition:.3s;
+
+}
+
+.recruiter-form:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow-lg);
 
 }
 
 .recruiter-form input,
 .recruiter-form textarea{
 
+    width:100%;
+
     padding:1rem;
 
-    border:1px solid #ddd;
+    border:1px solid var(--border);
 
     border-radius:12px;
 
+    background:var(--background);
+
+    color:var(--text);
+
     font-size:1rem;
+
+    transition:.25s;
+
+}
+
+.recruiter-form input:focus,
+.recruiter-form textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
 
 }
 
@@ -49,7 +98,13 @@
 
 .recruiter-form button{
 
-    background:var(--primary);
+    margin-top:.5rem;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        #4f8cff
+    );
 
     color:white;
 
@@ -59,18 +114,41 @@
 
     border-radius:12px;
 
-    cursor:pointer;
+    font-size:15px;
 
     font-weight:600;
 
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.25);
+
 }
+
+.recruiter-form button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.recruiter-form button:active{
+
+    transform:scale(.98);
+
+}
+
+/* ==========================================================
+   DASHBOARD STATS
+========================================================== */
+
 .dashboard-stats{
 
     display:grid;
 
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 
-    gap:20px;
+    gap:22px;
 
     margin:2rem 0;
 
@@ -78,21 +156,57 @@
 
 .dashboard-card{
 
-    background:white;
+    background:var(--surface);
+
+    color:var(--text);
 
     padding:2rem;
 
-    border-radius:18px;
+    border-radius:20px;
+
+    border:1px solid var(--border);
 
     text-align:center;
 
     box-shadow:var(--shadow-md);
 
+    transition:.3s;
+
 }
+
+.dashboard-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+.dashboard-card h3{
+
+    font-size:2rem;
+
+    color:var(--primary);
+
+    margin-bottom:.5rem;
+
+}
+
+.dashboard-card p{
+
+    color:var(--text-light);
+
+}
+
+/* ==========================================================
+   ACTION BUTTONS
+========================================================== */
 
 .dashboard-actions{
 
     display:flex;
+
+    flex-wrap:wrap;
 
     gap:20px;
 
@@ -104,28 +218,108 @@
 
     text-decoration:none;
 
-    background:var(--primary);
-
-    color:white;
-
     padding:1rem 1.5rem;
 
     border-radius:12px;
 
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        #4f8cff
+    );
+
+    color:white;
+
     font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.20);
 
 }
 
+.dashboard-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+   JOB LIST
+========================================================== */
+
 .dashboard-item{
 
-    background:white;
+    background:var(--surface);
+
+    color:var(--text);
 
     margin:1rem 0;
 
-    padding:1rem;
+    padding:1.5rem;
 
-    border-radius:14px;
+    border-radius:18px;
+
+    border:1px solid var(--border);
 
     box-shadow:var(--shadow-sm);
+
+    transition:.3s;
+
+}
+
+.dashboard-item:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+.dashboard-item h3{
+
+    color:var(--text);
+
+    margin-bottom:.5rem;
+
+}
+
+.dashboard-item p{
+
+    color:var(--text-light);
+
+    line-height:1.6;
+
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media(max-width:768px){
+
+.recruiter-page{
+
+    padding:1rem;
+
+}
+
+.recruiter-form{
+
+    padding:1.5rem;
+
+}
+
+.dashboard-actions{
+
+    flex-direction:column;
+
+}
+
+.dashboard-btn{
+
+    text-align:center;
+
+}
 
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import "./JobCard.css";
 
@@ -11,12 +12,15 @@ import Button from "../Button/Button";
 
 function JobCard({
     jobId,
+    recruiterId,
     title,
     company,
     location,
     salary,
     type,
 }) {
+
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [applied, setApplied] = useState(false);
@@ -64,30 +68,67 @@ function JobCard({
 
     }
 
+    async function handleMessageRecruiter() {
+
+        try {
+
+            const { data } = await api.post(
+                "/conversations",
+                {
+                    receiverId: recruiterId,
+                }
+            );
+
+            navigate(
+                `/chat?conversation=${data._id}`
+            );
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to start conversation"
+            );
+
+        }
+
+    }
+
     return (
 
         <Card>
 
             <div className="job-card">
 
-                <Badge>
-                    {type}
-                </Badge>
+                <Badge>{type}</Badge>
 
                 <h3>{title}</h3>
 
                 <p>
+
                     {company} • {location}
+
                 </p>
 
                 <div className="job-footer">
 
                     <span>{salary}</span>
 
+                </div>
+
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "10px",
+                        marginTop: "15px",
+                    }}
+                >
+
                     <Button
                         onClick={handleApply}
                         disabled={loading || applied}
                     >
+
                         {
                             loading
                                 ? "Applying..."
@@ -95,6 +136,13 @@ function JobCard({
                                 ? "Applied ✓"
                                 : "Apply"
                         }
+
+                    </Button>
+
+                    <Button
+                        onClick={handleMessageRecruiter}
+                    >
+                        Message
                     </Button>
 
                 </div>
