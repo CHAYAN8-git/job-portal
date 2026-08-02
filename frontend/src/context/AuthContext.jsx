@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/api";
-
+import socket from "../services/socket";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -27,6 +27,9 @@ export function AuthProvider({ children }) {
         console.log("Profile:", data);
 
         setUser(data);
+        socket.connect();
+
+socket.emit("join", data._id);
     } catch (error) {
         console.log("Profile Error:", error.response);
 
@@ -37,9 +40,15 @@ export function AuthProvider({ children }) {
     }
 }
    function logout() {
+
+    socket.disconnect();
+
     localStorage.removeItem("token");
+
     setUser(null);
+
     window.location.href = "/";
+
 }
 
     return (

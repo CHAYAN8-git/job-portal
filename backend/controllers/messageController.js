@@ -39,6 +39,20 @@ const sendMessage = async (req, res) => {
 
         const populatedMessage = await Message.findById(message._id)
             .populate("sender", "fullName profilePhoto");
+            const io = req.app.get("io");
+
+conversation.participants.forEach((participant) => {
+
+    if (participant.toString() !== req.user.userId) {
+
+        io.to(participant.toString()).emit(
+            "receive-message",
+            populatedMessage
+        );
+
+    }
+
+});
 
         res.status(201).json(populatedMessage);
 

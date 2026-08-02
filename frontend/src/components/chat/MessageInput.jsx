@@ -32,10 +32,8 @@ function MessageInput({
                 }
             );
 
-            setMessages([
-                ...messages,
-                data,
-            ]);
+            // Instantly show message for sender
+            setMessages(prev => [...prev, data]);
 
             setText("");
 
@@ -61,11 +59,17 @@ function MessageInput({
 
         <div className="message-input">
 
-            <button className="input-icon">
+            <button
+                className="input-icon"
+                type="button"
+            >
                 <Smile size={20} />
             </button>
 
-            <button className="input-icon">
+            <button
+                className="input-icon"
+                type="button"
+            >
                 <Paperclip size={20} />
             </button>
 
@@ -78,17 +82,19 @@ function MessageInput({
                 placeholder="Type your message..."
             />
 
-            <button className="input-icon">
+            <button
+                className="input-icon"
+                type="button"
+            >
                 <Mic size={20} />
             </button>
 
             <button
                 className="send-btn"
+                type="button"
                 onClick={sendMessage}
             >
-
                 <SendHorizontal size={18} />
-
             </button>
 
         </div>

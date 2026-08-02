@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
+import socket from "../../services/socket";
 
 import MessageBubble from "./MessageBubble";
 import MessageInput from "./MessageInput";
@@ -11,6 +12,8 @@ function ChatWindow({ conversation }) {
 
     const [messages, setMessages] = useState([]);
 
+    const bottomRef = useRef(null);
+
     useEffect(() => {
 
         if (conversation) {
@@ -18,6 +21,39 @@ function ChatWindow({ conversation }) {
         }
 
     }, [conversation]);
+
+    useEffect(() => {
+
+        socket.on("receive-message", (message) => {
+
+            const conversationId =
+                typeof message.conversation === "object"
+                    ? message.conversation._id
+                    : message.conversation;
+
+            if (conversationId === conversation?._id) {
+
+                setMessages(prev => [...prev, message]);
+
+            }
+
+        });
+
+        return () => {
+
+            socket.off("receive-message");
+
+        };
+
+    }, [conversation]);
+
+    useEffect(() => {
+
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+
+    }, [messages]);
 
     async function fetchMessages() {
 
@@ -40,6 +76,7 @@ function ChatWindow({ conversation }) {
     if (!conversation) {
 
         return (
+
             <div className="chat-window">
 
                 <div className="empty-chat">
@@ -51,6 +88,7 @@ function ChatWindow({ conversation }) {
                 </div>
 
             </div>
+
         );
 
     }
@@ -107,6 +145,8 @@ function ChatWindow({ conversation }) {
                     />
 
                 ))}
+
+                <div ref={bottomRef}></div>
 
             </div>
 
