@@ -8,8 +8,7 @@ import MessageInput from "./MessageInput";
 
 function ChatWindow({ conversation }) {
 
-    const { user } = useAuth();
-
+const { user, onlineUsers } = useAuth();
     const [messages, setMessages] = useState([]);
 
     const bottomRef = useRef(null);
@@ -96,7 +95,8 @@ function ChatWindow({ conversation }) {
     const otherUser = conversation.participants.find(
         participant => participant._id !== user._id
     );
-
+const isOnline =
+    onlineUsers.includes(otherUser?._id);
     return (
 
         <div className="chat-window">
@@ -117,8 +117,13 @@ function ChatWindow({ conversation }) {
 
                         <h3>{otherUser?.fullName}</h3>
 
-                        <p>🟢 Active Now</p>
+<p>
 
+    {isOnline
+        ? "🟢 Online"
+        : "⚫ Offline"}
+
+</p>
                     </div>
 
                 </div>

@@ -19,10 +19,12 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173",
+        "http://localhost:5174"],
         methods: ["GET", "POST"],
     },
 });
+const onlineUsers = new Map();
 app.set("io", io);
 app.use(cors());
 app.use(express.json());
@@ -51,20 +53,38 @@ io.on("connection", (socket) => {
 
     console.log("🟢 Connected:", socket.id);
 
-   socket.on("join", (userId) => {
+  socket.on("join", (userId) => {
 
     socket.join(userId);
 
-    console.log("Joined room:", userId);
+    onlineUsers.set(userId, socket.id);
 
-    console.log(socket.rooms);
+    io.emit(
+        "online-users",
+        [...onlineUsers.keys()]
+    );
 
 });
 
-    socket.on("disconnect", () => {
+   socket.on("disconnect", () => {
 
-        console.log("🔴 Disconnected:", socket.id);
+    for (const [userId, socketId] of onlineUsers.entries()) {
 
-    });
+        if (socketId === socket.id) {
+
+            onlineUsers.delete(userId);
+
+            break;
+
+        }
+
+    }
+
+    io.emit(
+        "online-users",
+        [...onlineUsers.keys()]
+    );
+
+});
 
 });

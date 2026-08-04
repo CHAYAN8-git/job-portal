@@ -8,13 +8,13 @@ function ConversationItem({
 
 }) {
 
-    const { user } = useAuth();
-
+const { user, onlineUsers } = useAuth();
     const otherUser = conversation.participants.find(
 
         participant => participant._id !== user._id
 
     );
+    const isOnline = onlineUsers.includes(otherUser?._id);
 
     return (
 
@@ -27,8 +27,9 @@ function ConversationItem({
 
                 {otherUser?.fullName?.charAt(0)}
 
-                <span className="online-dot"></span>
-
+{isOnline && (
+    <span className="online-dot"></span>
+)}
             </div>
 
             <div className="conversation-content">
