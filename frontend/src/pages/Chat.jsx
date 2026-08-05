@@ -72,10 +72,11 @@ function Chat() {
                 setSelectedConversation={setSelectedConversation}
             />
 
-            <ChatWindow
-                conversation={selectedConversation}
-            />
-
+<ChatWindow
+    conversation={selectedConversation}
+    conversations={conversations}
+    setConversations={setConversations}
+/>
         </section>
 
     );

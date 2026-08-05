@@ -8,13 +8,38 @@ function ConversationItem({
 
 }) {
 
-const { user, onlineUsers } = useAuth();
+    const { user, onlineUsers } = useAuth();
+
     const otherUser = conversation.participants.find(
 
         participant => participant._id !== user._id
 
     );
+
     const isOnline = onlineUsers.includes(otherUser?._id);
+
+    function formatTime(date) {
+
+        if (!date) return "";
+
+        const now = new Date();
+        const messageDate = new Date(date);
+
+        if (now.toDateString() === messageDate.toDateString()) {
+
+            return messageDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+
+        }
+
+        return messageDate.toLocaleDateString([], {
+            day: "numeric",
+            month: "short",
+        });
+
+    }
 
     return (
 
@@ -27,9 +52,10 @@ const { user, onlineUsers } = useAuth();
 
                 {otherUser?.fullName?.charAt(0)}
 
-{isOnline && (
-    <span className="online-dot"></span>
-)}
+                {isOnline && (
+                    <span className="online-dot"></span>
+                )}
+
             </div>
 
             <div className="conversation-content">
@@ -37,6 +63,12 @@ const { user, onlineUsers } = useAuth();
                 <div className="conversation-top">
 
                     <h4>{otherUser?.fullName}</h4>
+
+                    <span className="conversation-time">
+
+                        {formatTime(conversation.updatedAt)}
+
+                    </span>
 
                 </div>
 
@@ -50,9 +82,21 @@ const { user, onlineUsers } = useAuth();
 
                     <p className="last-message">
 
-                        Start chatting...
+                        {conversation.lastMessage
+                            ? conversation.lastMessage
+                            : "Start chatting..."}
 
                     </p>
+
+                    {conversation.unreadCount > 0 && (
+
+                        <span className="unread-badge">
+
+                            {conversation.unreadCount}
+
+                        </span>
+
+                    )}
 
                 </div>
 

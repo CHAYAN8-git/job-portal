@@ -53,38 +53,65 @@ io.on("connection", (socket) => {
 
     console.log("🟢 Connected:", socket.id);
 
-  socket.on("join", (userId) => {
+    socket.on("join", (userId) => {
 
-    socket.join(userId);
+        console.log("🔥 JOIN EVENT RECEIVED:", userId);
 
-    onlineUsers.set(userId, socket.id);
+        socket.join(userId);
 
-    io.emit(
-        "online-users",
-        [...onlineUsers.keys()]
-    );
+        console.log(
+            "Room Members:",
+            io.sockets.adapter.rooms.get(userId)
+        );
 
-});
+        onlineUsers.set(userId, socket.id);
 
-   socket.on("disconnect", () => {
+        io.emit(
+            "online-users",
+            [...onlineUsers.keys()]
+        );
 
-    for (const [userId, socketId] of onlineUsers.entries()) {
+    });
 
-        if (socketId === socket.id) {
+    // ==========================
+    // Typing Indicator
+    // ==========================
 
-            onlineUsers.delete(userId);
+    socket.on("typing", ({ receiverId }) => {
 
-            break;
+        io.to(receiverId).emit("user-typing");
+
+    });
+
+    socket.on("stop-typing", ({ receiverId }) => {
+
+        io.to(receiverId).emit("user-stop-typing");
+
+    });
+
+    // ==========================
+
+    socket.on("disconnect", () => {
+
+        for (const [userId, socketId] of onlineUsers.entries()) {
+
+            if (socketId === socket.id) {
+
+                onlineUsers.delete(userId);
+
+                break;
+
+            }
 
         }
 
-    }
+        io.emit(
+            "online-users",
+            [...onlineUsers.keys()]
+        );
 
-    io.emit(
-        "online-users",
-        [...onlineUsers.keys()]
-    );
+        console.log("🔴 Disconnected:", socket.id);
 
-});
+    });
 
 });

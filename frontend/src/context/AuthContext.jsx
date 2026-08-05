@@ -16,16 +16,14 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
 
-        socket.on("online-users", (users) => {
-
+        function handleOnlineUsers(users) {
             setOnlineUsers(users);
+        }
 
-        });
+        socket.on("online-users", handleOnlineUsers);
 
         return () => {
-
-            socket.off("online-users");
-
+            socket.off("online-users", handleOnlineUsers);
         };
 
     }, []);
@@ -37,10 +35,8 @@ export function AuthProvider({ children }) {
         console.log("Token:", token);
 
         if (!token) {
-
             setLoading(false);
             return;
-
         }
 
         try {
@@ -57,7 +53,17 @@ export function AuthProvider({ children }) {
 
             }
 
-            socket.emit("join", data._id);
+            socket.off("connect");
+
+            socket.on("connect", () => {
+
+                console.log("🟢 Socket Connected:", socket.id);
+
+                socket.emit("join", data._id);
+
+                console.log("✅ Joined Room:", data._id);
+
+            });
 
         } catch (error) {
 
@@ -108,7 +114,5 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-
     return useContext(AuthContext);
-
 }

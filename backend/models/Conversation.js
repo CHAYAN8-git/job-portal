@@ -9,6 +9,22 @@ const conversationSchema = new mongoose.Schema(
                 required: true,
             },
         ],
+
+        lastMessage: {
+            type: String,
+            default: "",
+        },
+
+        lastMessageSender: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
+        },
+
+        unreadCount: {
+            type: Number,
+            default: 0,
+        },
     },
     {
         timestamps: true,

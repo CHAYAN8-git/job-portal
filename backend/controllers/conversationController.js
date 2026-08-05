@@ -49,6 +49,7 @@ const getMyConversations = async (req, res) => {
             participants: req.user.userId,
         })
             .populate("participants", "-password")
+            .populate("lastMessageSender", "fullName")
             .sort({ updatedAt: -1 });
 
         res.status(200).json(conversations);
